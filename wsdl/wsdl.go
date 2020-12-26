@@ -15,7 +15,7 @@ func GetWSDL(uri string) ([]byte, error) {
 	wsdl, err := ioutil.ReadAll(res.Body)
 	res.Body.Close()
 	if err != nil {
-		return nil, errors.New("Could not get wsdl '" + uri + "'.")
+		return nil, errors.New("Could not read wsdl")
 	}
 
 	return wsdl, err
