@@ -1,5 +1,5 @@
 module github.com/peterramaldes/wtf
 
-go 1.15
+require github.com/urfave/cli/v2 v2.3.0
 
-require github.com/urfave/cli v1.22.5
+go 1.15
