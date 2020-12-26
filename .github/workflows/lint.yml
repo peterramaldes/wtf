@@ -1,14 +1,7 @@
-name: golangci-lint
-on:
-  push:
-    tags:
-      - v*
-    branches:
-      - master
-      - main
-  pull_request:
+on: [push, pull_request]
+name: Lint
 jobs:
-  golangci:
+  lint:
     name: lint
     runs-on: ubuntu-latest
     steps:
