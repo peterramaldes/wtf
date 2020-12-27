@@ -1,7 +1,6 @@
 package wsdl
 
 import (
-	"errors"
 	"io/ioutil"
 	"net/http"
 )
@@ -9,13 +8,13 @@ import (
 func GetWSDL(uri string) ([]byte, error) {
 	res, err := http.Get(uri)
 	if err != nil {
-		return nil, errors.New("Could not get wsdl '" + uri + "'.")
+		return nil, err
 	}
 
 	wsdl, err := ioutil.ReadAll(res.Body)
 	res.Body.Close()
 	if err != nil {
-		return nil, errors.New("Could not read wsdl")
+		return nil, err
 	}
 
 	return wsdl, err
