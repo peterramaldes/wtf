@@ -101,10 +101,10 @@ func PrintJSON(wsdlByteArray []byte) {
 
 	xml.Unmarshal(wsdlByteArray, &w)
 
-	for i := 0; i < len(w.WSDLPortType); i++ {
-		for j := 0; j < len(w.WSDLPortType[i].Operations); j++ {
+	for _, p := range w.WSDLPortType {
+		for _, o := range p.Operations {
+
 			var s = new(Schema)
-			var o = w.WSDLPortType[i].Operations[j]
 
 			s.Title = o.Name + " form"
 			s.Description = o.Name + " form example."
@@ -112,24 +112,18 @@ func PrintJSON(wsdlByteArray []byte) {
 			s.Required = []string{}
 			s.Properties = make(map[string]Property)
 
-			inputMessageValue := o.Input.Message[4:]
+			for _, v := range w.WSDLMessage {
+				if v.Name == o.Input.Message[4:] {
 
-			for m := 0; m < len(w.WSDLMessage); m++ {
-				if w.WSDLMessage[m].Name == inputMessageValue {
+					for _, n := range w.WSDLTypes.SSchema.SElement {
+						if n.Name == v.WSDLPart.Element[4:] {
 
-					messagePartElement := w.WSDLMessage[m].WSDLPart.Element[4:]
-
-					for n := 0; n < len(w.WSDLTypes.SSchema.SElement); n++ {
-						if w.WSDLTypes.SSchema.SElement[n].Name == messagePartElement {
-							for e := 0; e < len(w.WSDLTypes.SSchema.SElement[n].SComplexType.SSequence.SElement); e++ {
+							for _, e := range n.SComplexType.SSequence.SElement {
 								// TODO(Peter): Como eu sei se o elemento é requerido?
-								element := w.WSDLTypes.SSchema.SElement[n].SComplexType.SSequence.SElement[e]
-
-								s.Properties[element.Name] = Property{
-									Type:  element.Type[2:],
-									Title: element.Name,
+								s.Properties[e.Name] = Property{
+									Type:  e.Type[2:],
+									Title: e.Name,
 								}
-
 							}
 						}
 					}
