@@ -112,13 +112,13 @@ func PrintJSON(wsdlByteArray []byte) {
 			s.Required = []string{}
 			s.Properties = make(map[string]Property)
 
-			for _, v := range w.WSDLMessage {
-				if v.Name == o.Input.Message[4:] {
+			for _, m := range w.WSDLMessage {
+				if m.Name == o.Input.Message[4:] {
 
-					for _, n := range w.WSDLTypes.SSchema.SElement {
-						if n.Name == v.WSDLPart.Element[4:] {
+					for _, e := range w.WSDLTypes.SSchema.SElement {
+						if e.Name == m.WSDLPart.Element[4:] {
 
-							for _, e := range n.SComplexType.SSequence.SElement {
+							for _, e := range e.SComplexType.SSequence.SElement {
 								// TODO(Peter): Como eu sei se o elemento é requerido?
 								s.Properties[e.Name] = Property{
 									Type:  e.Type[2:],
